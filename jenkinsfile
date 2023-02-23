@@ -1,0 +1,32 @@
+
+pipeline {
+    agent {
+        label "cicd"
+    }
+    stages {
+        stage('path'){
+            steps {
+            sh "cp /home/containers/dockerfile /tmp/workspace/my-us-d-filenginx"
+            sh "cat dockerfile "
+            }
+        }
+        stage('build') {
+            steps {
+                sh "docker build -t nginx ."
+                sh "docker images"
+            }
+        }
+            stage('run'){
+                steps{
+                    sh "docker run -itd --name ngx -p 8010:80 nginx"
+                    
+                }
+            }
+            stage('status'){
+                steps{
+                    sh "docker ps"
+                }
+            }
+        
+    }
+}
